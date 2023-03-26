@@ -2,7 +2,7 @@
 
 ### Usage example 
 
-```bash
+```
 Enter product:
 cornflakes
 Enter quantity:
