@@ -11,6 +11,18 @@ final case class ShoppingCart private(productUnits: ProductUnits) {
   def get(product: Product): Quantity =
     productUnits.getOrElse(product, 0)
 
+  def remove(product: Product, quantity: Quantity): ShoppingCart =
+    productUnits
+      .get(product)
+      .map(_ - quantity)
+      .fold(this) { remaining =>
+        copy(
+          if (remaining > 0)
+            productUnits.updated(product, remaining)
+          else productUnits - product
+        )
+      }
+
   def subtotal: Price =
     productUnits.map { case (product, quantity) =>
       product.price * quantity

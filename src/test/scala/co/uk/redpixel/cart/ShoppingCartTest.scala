@@ -1,7 +1,6 @@
 package co.uk.redpixel.cart
 
 import cats.implicits.toShow
-import co.uk.redpixel.cart
 import co.uk.redpixel.cart.data.ArbitraryData._
 import munit.ScalaCheckSuite
 import org.scalacheck.Gen
@@ -10,24 +9,48 @@ import org.scalacheck.Prop.forAll
 class ShoppingCartTest extends ScalaCheckSuite {
 
   property("get product from empty cart") {
-    forAll { (product: cart.Product) =>
+    forAll { (product: Product) =>
       assertEquals(ShoppingCart.empty.get(product), expected = 0)
     }
   }
 
   property("add product to empty cart") {
-    forAll { (product: cart.Product, quantity: Quantity) =>
+    forAll { (product: Product, quantity: Quantity) =>
       assertEquals(ShoppingCart.empty.add(product, quantity).get(product), expected = quantity)
     }
   }
 
   property("update product in cart") {
-    forAll { (product: cart.Product, quantity1: Quantity, quantity2: Quantity) =>
+    forAll { (product: Product, quantity1: Quantity, quantity2: Quantity) =>
       assertEquals(
         ShoppingCart.empty
           .add(product, quantity1)
           .add(product, quantity2)
           .get(product), expected = quantity1 + quantity2
+      )
+    }
+  }
+
+  property("remove non-existing item") {
+    forAll { (product: Product, quantity: Quantity) =>
+      assertEquals(ShoppingCart.empty.remove(product, quantity), ShoppingCart.empty)
+    }
+  }
+
+  property("remove an existing item") {
+    forAll { (product: Product, quantity: Quantity) =>
+      assertEquals(
+        ShoppingCart(product -> (quantity + 2)).remove(product, quantity),
+        ShoppingCart(product -> 2)
+      )
+    }
+  }
+
+  property("remove more items than existing") {
+    forAll { (product: Product, quantity: Quantity) =>
+      assertEquals(
+        ShoppingCart(product -> quantity).remove(product, quantity + 1),
+        ShoppingCart.empty
       )
     }
   }

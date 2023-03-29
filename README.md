@@ -1,5 +1,18 @@
 # Shopping cart
 
+Shopping cart is a simple application that allows you to add and remove products from the shopping cart and calculate the total price, similar to what you would see on any e-commerce website.
+Pricing data for each product is retrieved via an HTTP call. You can find example pricing data for a set of sample products at the URI’s below:
+- https://raw.githubusercontent.com/mattjanks16/shopping-cart-test-data/main/cheerios.json
+- https://raw.githubusercontent.com/mattjanks16/shopping-cart-test-data/main/cornflakes.json
+- https://raw.githubusercontent.com/mattjanks16/shopping-cart-test-data/main/frosties.json
+- https://raw.githubusercontent.com/mattjanks16/shopping-cart-test-data/main/shreddies.json
+- https://raw.githubusercontent.com/mattjanks16/shopping-cart-test-data/main/weetabix.json
+
+Total price is calculated by:
+- Calculating cart subtotal (sum of price for all items)
+- Payable tax, charged at 12.5% on the subtotal 
+- Total payable (subtotal + tax)
+
 ### Usage example 
 
 ```
